@@ -8,4 +8,5 @@ interface ArticleRepository{
     fun saveArticlesToDB(): Single<List<Article>>
     fun getArticles(refresh: Boolean): Single<List<Article>>
     fun updateUserAction(id: String, action: Boolean): Completable
+    fun getReviewArticles(): Single<List<Article>>
 }

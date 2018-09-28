@@ -2,6 +2,7 @@ package io.droidplate.home24Test.ui.articlelist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -11,6 +12,7 @@ import io.altalabs.androidbase.Data
 import io.altalabs.androidbase.DataState
 import io.droidplate.home24Test.*
 import io.droidplate.home24Test.model.ArticleItem
+import io.droidplate.home24Test.ui.review.ReviewActivity
 import io.droidplate.home24test.R
 import kotlinx.android.synthetic.main.activity_article_list.*
 import timber.log.Timber
@@ -28,27 +30,23 @@ class ArticleListActivity : AppCompatActivity() {
     lateinit var viewModel: ArticleActivityViewModel
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article_list)
-
         getAppInjector().inject(this)
-
 
         supportActionBar?.title = "Articles"
 
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
-      viewModel = withViewModel<ArticleActivityViewModel>(viewModelFactory) {
+        viewModel = withViewModel<ArticleActivityViewModel>(viewModelFactory) {
             swipeRefreshLayout.setOnRefreshListener { getArticles(true) }
+            getArticles(true)
             observe(articles, ::updateArticles)
         }
 
         initView()
     }
-
 
     /**
      * View setup
@@ -70,15 +68,12 @@ class ArticleListActivity : AppCompatActivity() {
                 toast("Liked Article", this@ArticleListActivity)
             }
 
-
             articleAdapter.onDisLikeClick = {
                 viewModel.updateUserAction(it.id, false)
                 navigateToNextArticle()
                 toast("DisLiked Article", this@ArticleListActivity)
             }
         }
-
-
         /**
          * observe for action counter change
          */
@@ -86,13 +81,16 @@ class ArticleListActivity : AppCompatActivity() {
             action_counter.text = " $action / $listSize"
         })
 
+
+        review_button.setOnClickListener { startActivity(Intent(this@ArticleListActivity, ReviewActivity::class.java)) }
     }
 
     /**
      * Change Article item on action button click
      */
-    private fun navigateToNextArticle(){
+    private fun navigateToNextArticle() {
         position++
+        review_button.visibility = View.VISIBLE
         if (position > articleList.size - 1) {
             empty_state_layout.visibility = View.VISIBLE
             articleRecyclerViewHome.visibility = View.GONE
@@ -102,6 +100,7 @@ class ArticleListActivity : AppCompatActivity() {
         }
 
     }
+
     /**
      * adapter data-binding
      * @param data [shopItem list from the data layer]
@@ -125,7 +124,7 @@ class ArticleListActivity : AppCompatActivity() {
         action_counter.text = "$counter  /  $listSize"
         this.articleList.addAll(list)
         if (articleList.size > 0) {
-                articleAdapter.addItem(articleList[0])
+            articleAdapter.addItem(articleList[0])
         }
     }
 

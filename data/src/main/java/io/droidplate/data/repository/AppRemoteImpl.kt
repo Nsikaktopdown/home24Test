@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * Here implements all the api interface
  * Binding this it to the domain
- * @param api retrofit inteface
+ * @param api retrofit interface
  * @param mapper data passer
  */
 class AppRemoteImpl @Inject constructor(private val api: RemoteApi, private val mapper: ArticleMapper): AppRemote {

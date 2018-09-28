@@ -10,9 +10,21 @@ import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
 
+/**
+ * Article Repository implementation
+ * @param cache -> local storage
+ * @param remote -> remote data source
+ * @param mapper -> entity mappers
+ */
 class ArticleRepositoryImpl @Inject constructor(var cache: ArticleCache,
                                                 var remote: AppRemote,
                                                 var mapper: ArticleMapper) : ArticleRepository {
+
+
+    override fun getReviewArticles(): Single<List<Article>> {
+        return cache.getAllArticle().map { mapper.mapEntityToDomain(it) }
+    }
+
     override fun updateUserAction(id: String, action: Boolean) : Completable{
         return  cache.updateAction(id, action).doOnComplete { Timber.d("action updated") }
     }
@@ -25,7 +37,6 @@ class ArticleRepositoryImpl @Inject constructor(var cache: ArticleCache,
 
 
     override fun getArticles(refresh: Boolean): Single<List<Article>> = when (refresh) {
-
         true -> saveArticlesToDB().doOnSuccess { cache.getAllArticle().map { mapper.mapEntityToDomain(it) } }
         false -> cache.getAllArticle().map { mapper.mapEntityToDomain(it) }.doOnError { getArticles(true) }
     }
