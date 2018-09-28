@@ -33,7 +33,7 @@ Import project to Android Studio
 
 ![](https://res.cloudinary.com/hngfun/image/upload/v1538127164/Screen_Shot_2018-09-28_at_10.31.47_AM_aacrvq.png)
 
-Run project on Android Studio and select connect device
+Run project on Android Studio and select connected device
 
 ![](https://res.cloudinary.com/hngfun/image/upload/v1538127166/Screen_Shot_2018-09-28_at_10.32.20_AM_f1guv0.png)
 
