@@ -2,7 +2,7 @@
 
 
 
-[Demo](https://res.cloudinary.com/hngfun/image/upload/v1538126485/demo_ly7u6u.gif)
+![Demo](https://res.cloudinary.com/hngfun/image/upload/v1538126485/demo_ly7u6u.gif)
 
 # home24 Task for Mobile Engineer
 
